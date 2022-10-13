@@ -70,7 +70,7 @@ services:
     ports:
       - "${REDIS_PORT}:6379"                          # 设置容器6379端口映射指定宿主机端口
     networks:
-      - backend
+      - saltedfishCloud
     restart: always
 
   fronted:
