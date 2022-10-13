@@ -14,8 +14,9 @@ services:
       context: ./backend
     privileged: true
     environment:
-      - DB_HOST=${DB_HOST}
       - TZ=${TZ}
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
       - DB_USER=${MYSQL_USERNAME}
       - DB_PASSWORD=${MYSQL_PASSWORD}
       - REDIS_HOST=${REDIS_HOST}
@@ -28,13 +29,13 @@ services:
     restart: always
     volumes:
     # 设置文件存放目录
-      - ${DATA_VOLUMES}:/etc/prometheus
+      - ${DATA_VOLUMES}:/data/
     ports:
     # 后端服务端口
       - ${BACKEND_PORT}:8087
     # FTP 端口
       - ${FTP_CONTROL}:21
-      - ${FTP_PORTS}:20000-30000
+      - ${FTP_PORTS}:20000-20010
     deploy:
       resources:
         limits:
@@ -78,7 +79,10 @@ services:
       context: ./fronted
     environment:
       - TZ=${TZ}
-      - API_ADDR=backend:${BACKEND_PORT}
+      - API_ADDR=http://backend:${BACKEND_PORT}
+      - HTTP_PORT=80
+      - MAX_BODY_SIZE=8192m
+      - SERVER_NAME=_
     restart: always
     ports:
       - ${FRONTED_PORT}:80
