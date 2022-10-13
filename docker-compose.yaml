@@ -1,0 +1,86 @@
+version: '3.7'
+
+# 网络配置
+networks:
+  saltedfishCloud:
+    driver: ${NETWORKS_DRIVER}
+
+
+# 服务容器配置
+services:
+
+  backend:
+    build:
+      context: ./backend
+    privileged: true
+    environment:
+      - DB_HOST=${DB_HOST}
+      - TZ=${TZ}
+      - DB_USER=${MYSQL_USERNAME}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REG_CODE=${REG_CODE}
+      - STORE_TYPE=${STORE_TYPE}
+      - STORE_ROOT=${STORE_ROOT}
+      - PUBLIC_ROOT=${PUBLIC_ROOT}
+
+    restart: always
+    volumes:
+    # 设置文件存放目录
+      - ${DATA_VOLUMES}:/etc/prometheus
+    ports:
+    # 后端服务端口
+      - ${BACKEND_PORT}:8087
+    # FTP 端口
+      - ${FTP_CONTROL}:21
+      - ${FTP_PORTS}:20000-30000
+    deploy:
+      resources:
+        limits:
+          memory: ${LIMIT_MEMORY_BACKEND}
+    networks:
+      - saltedfishCloud
+
+  mysql:
+    build:
+      context: ./mysql
+    privileged: true
+    environment:
+      - TZ=${TZ}
+      - MYSQL_USER=${MYSQL_USERNAME}                  # 设置 Mysql 用户名称
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}              # 设置 Mysql 用户密码
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}    # 设置 Mysql root 用户密码
+    volumes:
+      - ${DATA_PATH_HOST}/mysql:/var/lib/mysql 
+    ports:
+      - "${MYSQL_PORT}:3306"                          # 设置容器3306端口映射指定宿主机端口
+    networks:
+      - saltedfishCloud
+    restart: always
+  
+  redis:
+    build:
+      context: ./redis
+    environment:
+      - TZ=${TZ}
+    privileged: true
+    volumes:
+      - ${DATA_PATH_HOST}/redis:/data                 # 引用 .env 配置中 DATA_PATH_HOST 变量，将宿主机上存放 Redis 数据的目录挂载到容器中 /data 目录
+    ports:
+      - "${REDIS_PORT}:6379"                          # 设置容器6379端口映射指定宿主机端口
+    networks:
+      - backend
+    restart: always
+
+  fronted:
+    build:
+      context: ./fronted
+    environment:
+      - TZ=${TZ}
+      - API_ADDR=backend:${BACKEND_PORT}
+    restart: always
+    ports:
+      - ${FRONTED_PORT}:80
+    networks:
+      - saltedfishCloud
