@@ -1,4 +1,4 @@
-# -saltedfishcloud
+# saltedfishcloud
 Quick start  saltedfishcloud with docker
 
 本文档描述生产环境配置，不同环境请按需切换到对应分支使用
@@ -6,12 +6,25 @@ Quick start  saltedfishcloud with docker
 2. 测试环境 - test
 3. 预发布环境 - release
 
+## docker 环境要求
+已验证环境: `Docker Compose version v2.10.2`
 
 ## Quick start guide
+1. 克隆本项目
+```shell
+$ git clone https://github.com/FarmerChillax/saltedfishcloud.git
+```
+2. 进入到项目根目录
 
+```shell
+$ cd saltedfishcloud
+```
+
+3. 执行以下命令
 ```shell
 $ docker-compose up -d
 ```
+
 ## 关键环境变量描述
 
 | 变量名              | Description                                             |
