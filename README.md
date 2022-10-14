@@ -5,6 +5,7 @@ Quick start  saltedfishcloud with docker
 1. 开发环境 - dev
 2. 测试环境 - test
 3. 预发布环境 - release
+4. 生产环境 - 当前分支(main)
 
 ## docker 环境要求
 已验证环境: `Docker Compose version v2.10.2`
