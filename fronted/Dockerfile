@@ -1,3 +1,3 @@
-FROM farmerchillax/sfc-web:latest
+FROM farmerchillax/sfc-web
 
 LABEL maintainer="FarmerChillax <farmer.notscientific@gmail.com>"
