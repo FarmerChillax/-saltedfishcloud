@@ -32,9 +32,7 @@ services:
     ports:
     # FTP 端口
       - ${FTP_CONTROL}:21
-      - ${FTP_PORTS}:20000-20010
-    # 后端服务端口
-      - ${BACKEND_PORT}:8087
+      - ${FTP_PORTS}:20000-30000
     deploy:
       resources:
         limits:
