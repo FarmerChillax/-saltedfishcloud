@@ -2,9 +2,9 @@
 Quick start  saltedfishcloud with docker
 
 本文档描述生产环境配置，不同环境请按需切换到对应分支使用
-1. 开发环境 - dev
-2. 测试环境 - test
-3. 预发布环境 - release
+1. 开发环境 - dev(todo)
+2. 测试环境 - test(todo)
+3. 预发布环境 - release(todo)
 4. 生产环境 - 当前分支(main)
 
 ## docker 环境要求
